@@ -2,6 +2,7 @@ package com.farkasatesz.mytodo.ui.screens.activeScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.farkasatesz.mytodo.data.converter.DateConverter
 import com.farkasatesz.mytodo.data.model.Todo
 import com.farkasatesz.mytodo.data.repositories.TodoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,12 +57,32 @@ class ActiveScreenViewModel @Inject constructor(
         deadline.value = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate()
     }
 
+    fun showDatePicker(){
+        showTodoDatePicker.value = true
+    }
+
+    fun hideDatePicker() {
+        showTodoDatePicker.value = false
+    }
+
+    fun showDialog(){
+        showTodoDialog.value = true
+    }
+
+    fun hideDialog() {
+        showTodoDialog.value = false
+    }
+
     private fun copyTodo(){
         selectedTodo.value?.let {
             setTitle(it.title)
             setDescription(it.description)
             deadline.value = it.deadline
         }
+    }
+
+    fun getDeadline(): String {
+        return DateConverter().dateToText(deadline.value)
     }
 
     fun selectTodo(todo: Todo){
