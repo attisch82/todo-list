@@ -1,7 +1,6 @@
 package com.farkasatesz.mytodo.ui.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,11 +17,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +35,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -41,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.farkasatesz.mytodo.data.converter.DateConverter
 import com.farkasatesz.mytodo.data.model.Todo
 import com.farkasatesz.mytodo.ui.screens.activeScreen.ActiveScreenViewModel
 
@@ -144,7 +148,7 @@ fun TodoDialog (
                 TodoButton(
                     buttonText = {
                         TodoText(
-                            text = viewModel.getDeadline()
+                            text = DateConverter().dateToText(deadline)
                         )
                     }
                 ) {
@@ -190,7 +194,7 @@ fun TodoDialog (
 @Composable
 fun TodoCard(
     todo: Todo,
-    getDeadline: () -> String,
+    deadline: String,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
     setToCompleted: () -> Unit
@@ -222,7 +226,7 @@ fun TodoCard(
                     text = todo.description
                 )
                 TodoText(
-                    text = getDeadline()
+                    text = deadline
                 )
             }
             ActionIcons(
@@ -269,5 +273,48 @@ private fun ActionIcons(
         ) {
             setToCompleted()
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TodoDatePicker(
+    deadline: Long,
+    dismiss: () -> Unit,
+    selectDate: (Long) -> Unit,
+) {
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = deadline,
+        selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                return System.currentTimeMillis() < utcTimeMillis
+            }
+        }
+    )
+    DatePickerDialog(
+        onDismissRequest = dismiss,
+        confirmButton = {
+            TodoButton(
+                buttonText = {
+                    TodoText("Select")
+                }
+            ) {
+                datePickerState.selectedDateMillis?.let {
+                    selectDate(it)
+                }
+                dismiss()
+            }
+        },
+        dismissButton = {
+            TodoButton(
+                buttonText = {
+                    TodoText("Cancel")
+                }
+            ) {
+                dismiss()
+            }
+        }
+    ) {
+        DatePicker(state = datePickerState)
     }
 }

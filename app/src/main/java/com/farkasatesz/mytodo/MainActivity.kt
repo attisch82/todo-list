@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import com.farkasatesz.mytodo.ui.screens.activeScreen.ActiveScreen
 import com.farkasatesz.mytodo.ui.screens.activeScreen.ActiveScreenViewModel
+import com.farkasatesz.mytodo.ui.screens.completedScreen.CompletedScreen
+import com.farkasatesz.mytodo.ui.screens.completedScreen.CompletetedScreenViewModel
 import com.farkasatesz.mytodo.ui.theme.MyTodoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,9 +18,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val viewModel : ActiveScreenViewModel by viewModels()
+            val viewModel : CompletetedScreenViewModel by viewModels()
             MyTodoTheme {
-                ActiveScreen(viewModel)
+                CompletedScreen(viewModel)
             }
         }
     }

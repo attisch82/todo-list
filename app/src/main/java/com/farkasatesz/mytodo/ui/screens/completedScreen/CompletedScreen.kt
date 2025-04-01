@@ -1,6 +1,5 @@
-package com.farkasatesz.mytodo.ui.screens.activeScreen
+package com.farkasatesz.mytodo.ui.screens.completedScreen
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,11 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -23,26 +20,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.farkasatesz.mytodo.data.converter.DateConverter
 import com.farkasatesz.mytodo.ui.components.TodoButton
 import com.farkasatesz.mytodo.ui.components.TodoCard
-import com.farkasatesz.mytodo.ui.components.TodoDatePicker
-import com.farkasatesz.mytodo.ui.components.TodoDialog
 
 @Composable
-fun ActiveScreen(
-    viewModel: ActiveScreenViewModel
+fun CompletedScreen(
+    viewModel: CompletetedScreenViewModel
 ) {
 
     val todos by viewModel.todos.collectAsStateWithLifecycle()
-    val showDialog by viewModel.showTodoDialog.collectAsStateWithLifecycle()
-    val showDatePicker by viewModel.showTodoDatePicker.collectAsStateWithLifecycle()
 
     Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { viewModel.showDialog() }
-            ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Todo")
-            }
-        },
+
         bottomBar = {
             BottomAppBar {
                 Row(
@@ -82,27 +69,16 @@ fun ActiveScreen(
                     todo = todo,
                     deadline = DateConverter().dateToText(todo.deadline),
                     onEdit = {
-                        viewModel.selectTodo(todo)
-                        viewModel.showDialog()
+
                     },
                     onDelete = {
                         viewModel.deleteTodo(todo)
                     }
                 ) {
-                    viewModel.setTodoToCompleted(todo)
+                    viewModel.setTodoToActive(todo)
                 }
             }
         }
-        AnimatedVisibility(showDialog){
-            TodoDialog(viewModel)
-        }
-        if(showDatePicker){
-            TodoDatePicker(
-                deadline = viewModel.getDeadLineAsLong(),
-                dismiss = {viewModel.hideDatePicker()}
-            ) {
-                viewModel.setDeadline(it)
-            }
-        }
+
     }
 }

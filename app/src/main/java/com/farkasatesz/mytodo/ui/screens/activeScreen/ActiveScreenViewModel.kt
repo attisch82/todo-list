@@ -73,6 +73,10 @@ class ActiveScreenViewModel @Inject constructor(
         showTodoDialog.value = false
     }
 
+    fun getDeadLineAsLong(): Long{
+       return deadline.value.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+    }
+
     private fun copyTodo(){
         selectedTodo.value?.let {
             setTitle(it.title)
