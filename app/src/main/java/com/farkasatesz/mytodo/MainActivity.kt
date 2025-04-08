@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import com.farkasatesz.mytodo.ui.navigation.TodoNavigation
 import com.farkasatesz.mytodo.ui.screens.activeScreen.ActiveScreen
 import com.farkasatesz.mytodo.ui.screens.activeScreen.ActiveScreenViewModel
 import com.farkasatesz.mytodo.ui.screens.completedScreen.CompletedScreen
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val viewModel : CompletetedScreenViewModel by viewModels()
             MyTodoTheme {
-                CompletedScreen(viewModel)
+                TodoNavigation()
             }
         }
     }

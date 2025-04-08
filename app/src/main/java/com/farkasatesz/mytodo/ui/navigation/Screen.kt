@@ -6,5 +6,5 @@ sealed class Screen {
     @Serializable
     object ActiveScreen : Screen()
     @Serializable
-    object CompletedScreen : Screen()
+    data class CompletedScreen(val name: String) : Screen()
 }

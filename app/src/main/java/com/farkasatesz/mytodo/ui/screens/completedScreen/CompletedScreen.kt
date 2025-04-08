@@ -10,26 +10,38 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.farkasatesz.mytodo.data.converter.DateConverter
 import com.farkasatesz.mytodo.ui.components.TodoButton
 import com.farkasatesz.mytodo.ui.components.TodoCard
+import com.farkasatesz.mytodo.ui.navigation.Screen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompletedScreen(
-    viewModel: CompletetedScreenViewModel
+    navController: NavController,
+    viewModel: CompletetedScreenViewModel,
+    name: String
 ) {
 
     val todos by viewModel.todos.collectAsStateWithLifecycle()
 
     Scaffold(
-
+        topBar = {
+            TopAppBar(title = {
+                Text(text = name)
+            })
+        },
         bottomBar = {
             BottomAppBar {
                 Row(
@@ -44,7 +56,7 @@ fun CompletedScreen(
                             )
                         }
                     ) {
-
+                        navController.navigate(Screen.ActiveScreen)
                     }
                     TodoButton(
                         buttonText = {
@@ -54,7 +66,7 @@ fun CompletedScreen(
                             )
                         }
                     ) {
-
+                        navController.navigate(Screen.CompletedScreen)
                     }
                 }
             }

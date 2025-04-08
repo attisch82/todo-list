@@ -20,14 +20,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.farkasatesz.mytodo.data.converter.DateConverter
 import com.farkasatesz.mytodo.ui.components.TodoButton
 import com.farkasatesz.mytodo.ui.components.TodoCard
 import com.farkasatesz.mytodo.ui.components.TodoDatePicker
 import com.farkasatesz.mytodo.ui.components.TodoDialog
+import com.farkasatesz.mytodo.ui.navigation.Screen
 
 @Composable
 fun ActiveScreen(
+    navController: NavController,
     viewModel: ActiveScreenViewModel
 ) {
 
@@ -57,7 +60,7 @@ fun ActiveScreen(
                             )
                         }
                     ) {
-
+                        navController.navigate(Screen.ActiveScreen)
                     }
                     TodoButton(
                         buttonText = {
@@ -67,7 +70,7 @@ fun ActiveScreen(
                             )
                         }
                     ) {
-
+                        navController.navigate(Screen.CompletedScreen(name = "blabla"))
                     }
                 }
             }

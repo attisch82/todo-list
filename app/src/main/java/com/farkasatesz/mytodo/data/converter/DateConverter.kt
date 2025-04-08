@@ -12,7 +12,6 @@ class DateConverter {
     }
 
     @TypeConverter
-    fun dateToText(date: LocalDate): String {
-        return "${date.year}-${date.monthValue}-${date.dayOfMonth}"
-    }
+    fun dateToText(date: LocalDate) = "${date.year}-${date.monthValue}-${date.dayOfMonth}"
+
 }

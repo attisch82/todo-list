@@ -6,6 +6,7 @@ import com.farkasatesz.mytodo.data.converter.DateConverter
 import com.farkasatesz.mytodo.data.model.Todo
 import com.farkasatesz.mytodo.data.repositories.TodoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -112,7 +113,7 @@ class ActiveScreenViewModel @Inject constructor(
     }
 
     fun upsertTodo(todo: Todo){
-        viewModelScope.launch{
+        viewModelScope.launch(Dispatchers.IO){
             repository.upsert(todo)
         }
     }

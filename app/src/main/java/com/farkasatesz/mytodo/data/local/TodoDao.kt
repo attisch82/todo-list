@@ -2,6 +2,7 @@ package com.farkasatesz.mytodo.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Upsert
 import com.farkasatesz.mytodo.data.model.Todo
